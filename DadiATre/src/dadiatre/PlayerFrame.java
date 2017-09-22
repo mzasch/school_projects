@@ -1,5 +1,7 @@
 package dadiatre;
 
+import javax.swing.JOptionPane;
+
 public class PlayerFrame extends javax.swing.JFrame {
 
     private final Lancio l;
@@ -11,11 +13,18 @@ public class PlayerFrame extends javax.swing.JFrame {
         initComponents();
     }
     
-    public void updateScores() {
+    public void update() {
         jl_score1.setText(Integer.toString(l.getPuntiG1()));
         jl_score2.setText(Integer.toString(l.getPuntiG2()));
         jl_score3.setText(Integer.toString(l.getPuntiG3()));
+        throwButton.setEnabled(l.isMyTurn(id));
     }
+    
+    void Victory() {
+        JOptionPane.showMessageDialog(rootPane, "Vince giocatore "+id);
+        System.exit(0);
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -121,7 +130,7 @@ public class PlayerFrame extends javax.swing.JFrame {
         int res = l.LancioDado();
         l.setPunti(id, res);
         playerHistory.setText(playerHistory.getText() + Integer.toString(res) + "\n");
-        updateScores();
+        update();
     }//GEN-LAST:event_throwButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

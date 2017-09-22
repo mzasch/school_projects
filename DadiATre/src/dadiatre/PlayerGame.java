@@ -4,10 +4,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class PlayerGame extends Thread {
-    PlayerFrame frame;
-    String nome;
-    Lancio lancio;
-    int id;
+    private final PlayerFrame frame;
+    private final String nome;
+    private final Lancio lancio;
+    private final int id;
     
     public PlayerGame(String nome, int id, Lancio l)
     {
@@ -17,12 +17,12 @@ public class PlayerGame extends Thread {
         this.id = id;
         frame.setTitle(nome);
         frame.setVisible(true);
-        frame.updateScores();
+        frame.update();
     }
     
     @Override
     public void run() {
-        while(true)
+        while(lancio.isGameRunning())
         {
             try {
                 synchronized(lancio) {
@@ -31,7 +31,12 @@ public class PlayerGame extends Thread {
             } catch (InterruptedException ex) {
                 Logger.getLogger(PlayerGame.class.getName()).log(Level.SEVERE, null, ex);
             }
-            frame.updateScores();
+            frame.update();
+            if(lancio.getPunti(id) >= lancio.PUNTIVITTORIA)
+            {
+                frame.Victory();
+                lancio.signalVictory();
+            }
         }
     }
 }
